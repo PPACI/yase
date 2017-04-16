@@ -7,6 +7,8 @@ import numpy
 
 from itertools import islice
 
+from tqdm import tqdm
+
 
 def split_sequence(sequence: str, separator: str, *args, **kwargs) -> List[str]:
     """
@@ -50,23 +52,29 @@ def load_dictionnary(path: str, encoding="UTF8") -> Dict[str, List[float]]:
     """
     with open(path, encoding=encoding) as file:
         transcode_dict = {}
-        from tqdm import tqdm
         for text_line in tqdm(file):
-            splitted_line = text_line.split(" ")
+            splitted_line = text_line.strip().split(" ")
             vectors = []
             for value in splitted_line[1:]:
                 try:
                     vectors.append(float(value))
                 except ValueError:
                     pass
-            transcode_dict[splitted_line[0]] = numpy.array(vectors, dtype=numpy.float16)
+            transcode_dict[splitted_line[0]] = numpy.array(splitted_line[1:], dtype=numpy.float16)
+            # TODO: the creation of a numpy array at each iteration is very slow, it should be refactored.
     return transcode_dict
 
 
-if __name__ == '__main__':
-    transcode_dict = load_dictionnary("C:\\Users\pierr\OneDrive\Developpement\Spacy Word Vector\wiki.fr.vec")
-    import sys
+def process_file(path_to_file: str, path_to_dict: str, path_output_file: str, separator: str,
+                 file_encoding: str = "UTF8",
+                 dict_encoding: str = "UTF8"):
+    print("loading dict...")
+    transcode_dict = load_dictionnary(path_to_dict)
 
-    print(sys.getsizeof(transcode_dict) / 1e6)
-    print(len(transcode_dict))
-    print(transcode_dict["bonjour"])
+
+if __name__ == '__main__':
+    print("loading dict in memory")
+    process_file(path_to_file="",
+                 path_to_dict="C:\\Users\pierr\OneDrive\Developpement\Spacy Word Vector\wiki.fr.vec",
+                 path_output_file="",
+                 separator="")
