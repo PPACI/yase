@@ -1,4 +1,5 @@
 import csv
+import json
 import re
 from typing import List, Dict
 
@@ -59,11 +60,12 @@ def load_dictionnary(path: str, encoding="UTF8") -> Dict[str, ndarray]:
     """
     with open(path, encoding=encoding) as file:
         total = sum([1 for _ in file])
+
     with open(path, encoding=encoding) as file:
         # total_stream = file.seek(0,2)
         # file.seek(0,0)  # Return to the start of the file
         transcode_dict = {}
-        time.sleep(0.001)  # Workaround for tqdm (windows only ?)
+        time.sleep(0.01)  # Workaround for tqdm (windows only ?)
         for text_line in tqdm(file, total=total, mininterval=0.5):
             splitted_line = text_line.strip().split(" ")
             vectors = []
@@ -72,7 +74,7 @@ def load_dictionnary(path: str, encoding="UTF8") -> Dict[str, ndarray]:
                     vectors.append(float(value))
                 except ValueError:
                     pass
-            transcode_dict[splitted_line[0]] = numpy.array(splitted_line[1:], dtype=numpy.float16)
+            transcode_dict[splitted_line[0].lower()] = numpy.array(splitted_line[1:], dtype=numpy.float16)
 
             # TODO: the creation of a numpy array at each iteration is very slow, it should be refactored.
     return transcode_dict
@@ -82,10 +84,9 @@ def process_file(path_to_file: str, path_to_dict: str, path_output_file: str, se
                  file_encoding: str = "UTF8",
                  dict_encoding: str = "UTF8"):
     print("loading dict...")
-    print("It can take minutes if the dict is big (over 1M token)")
     transcode_dict = load_dictionnary(path_to_dict, encoding=dict_encoding)
 
-    time.sleep(0.001)
+    time.sleep(0.01)
     print("transcoding file...")
     with open(path_to_file, encoding=file_encoding) as file:
         total = sum([1 for _ in file])
@@ -94,12 +95,12 @@ def process_file(path_to_file: str, path_to_dict: str, path_output_file: str, se
             fields = ["inputs", "vectors"]
             writer = csv.DictWriter(csv_output, fieldnames=fields)
             writer.writeheader()
-            time.sleep(0.001)
+            time.sleep(0.01)
             for line in tqdm(file, total=total, mininterval=0.5):
                 csv_line = {"inputs": line.strip(),
                             "vectors": transcode_sequence(sequence=line,
                                                           separator=separator,
                                                           transcode_dict=transcode_dict).tolist()}
                 writer.writerow(csv_line)
-    time.sleep(0.001)
+    time.sleep(0.01)
     print("done !")
