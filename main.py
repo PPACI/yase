@@ -1,8 +1,8 @@
 # coding=UTF8
-from yast import process_file
+from yast import *
 
 if __name__ == '__main__':
-    process_file(path_to_file="",
-                 path_to_dict="C:\\Users\pierr\OneDrive\Developpement\Spacy Word Vector\wiki.fr.vec",
-                 path_output_file="",
-                 separator="")
+    process_file(path_to_file="Ressources/test_input.txt",
+                 path_to_dict="Ressources/test_dict",
+                 path_output_file="Ressources/test_output.csv",
+                 separator=" |\.|,")

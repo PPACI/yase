@@ -88,5 +88,8 @@ ENV/
 # Rope project settings
 .ropeproject
 
-#intelliJ
+# intelliJ
 *.idea
+
+# test files
+Ressources
