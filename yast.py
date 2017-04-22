@@ -50,10 +50,10 @@ def transcode_sequence(sequence: str, separator: str, transcode_dict: Dict[str, 
     return numpy.stack(tokens, axis=0)  # TODO: return a fixed sized array
 
 
-def load_dictionnary(path: str, encoding="UTF8") -> Dict[str, ndarray]:
+def load_dictionary(path: str, encoding="UTF8") -> Dict[str, ndarray]:
     """
     Load the transcoding dict. It process the file chunk by chunk so very large file should not be a problem.
-    
+
     :param path: path to the dict
     :param encoding: Encoding of the transcode dictionary
     :return: the transcoding dict
@@ -84,7 +84,7 @@ def process_file(path_to_file: str, path_to_dict: str, path_output_file: str, se
                  file_encoding: str = "UTF8",
                  dict_encoding: str = "UTF8"):
     print("loading dict...")
-    transcode_dict = load_dictionnary(path_to_dict, encoding=dict_encoding)
+    transcode_dict = load_dictionary(path_to_dict, encoding=dict_encoding)
 
     time.sleep(0.01)
     print("transcoding file...")
