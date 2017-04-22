@@ -1,4 +1,3 @@
-# coding=UTF8
 import argparse
 from yast import process_file
 
