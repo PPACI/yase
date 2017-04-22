@@ -28,6 +28,21 @@ def split_sequence(sequence: str, separator: str, *args, **kwargs) -> List[str]:
         return tokens
 
 
+def apply_list_replace(input_str: str, replacements: Dict[str, str]) -> str:
+    """
+    Apply a series of replacement on the input.
+    
+    :param input_str: the string to be modified
+    :param replacements: a Dict regex -> replacement. Each item will be passed to re.sub()
+    :return: the modified string
+    """
+    temp = input_str
+    if isinstance(replacements, dict):
+        for replacement in replacements.items():
+            temp = re.sub(replacement[0], replacement[1], temp)
+    return temp
+
+
 def transcode_token(token: str, transcode_dict: Dict[str, ndarray]) -> ndarray:
     """
     Take a token contained in a sequence and transcode it to a vector of values using the provided transcode_dict.
@@ -40,8 +55,15 @@ def transcode_token(token: str, transcode_dict: Dict[str, ndarray]) -> ndarray:
     return transcode_dict.get(token)
 
 
-def transcode_str_line(sequence: str, separator: str, transcode_dict: Dict[str, ndarray]) -> ndarray:
-    splitted = [token for token in split_sequence(sequence.strip().lower(), separator=separator) if token != '']
+def get_replacement_dict(path: str, *args, **kwargs) -> Dict[str, str]:
+    # Todo: Read a CSV file "regex", "replacement" and return it as dict
+    raise NotImplementedError
+
+
+def transcode_str_line(sequence: str, separator: str, transcode_dict: Dict[str, ndarray],
+                       replacements: Dict[str, str] = None) -> ndarray:
+    replaced = apply_list_replace(input_str=sequence, replacements=replacements)
+    splitted = [token for token in split_sequence(replaced.strip().lower(), separator=separator) if token != '']
     tokens = []
     for word in splitted:
         token = transcode_token(token=word, transcode_dict=transcode_dict)
