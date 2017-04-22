@@ -58,8 +58,7 @@ def load_dictionary(path: str, encoding="UTF8") -> Dict[str, ndarray]:
     :param encoding: Encoding of the transcode dictionary
     :return: the transcoding dict
     """
-    with open(path, encoding=encoding) as file:
-        total = sum([1 for _ in file])
+    total = count_line(encoding, path)
 
     with open(path, encoding=encoding) as file:
         # total_stream = file.seek(0,2)
@@ -78,6 +77,12 @@ def load_dictionary(path: str, encoding="UTF8") -> Dict[str, ndarray]:
 
             # TODO: the creation of a numpy array at each iteration is very slow, it should be refactored.
     return transcode_dict
+
+
+def count_line(encoding, path):
+    with open(path, encoding=encoding) as file:
+        total = sum([1 for _ in file])
+    return total
 
 
 def process_file(path_to_file: str, path_to_dict: str, path_output_file: str, separator: str,
