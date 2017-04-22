@@ -40,7 +40,7 @@ def transcode_token(token: str, transcode_dict: Dict[str, ndarray]) -> ndarray:
     return transcode_dict.get(token)
 
 
-def transcode_sequence(sequence: str, separator: str, transcode_dict: Dict[str, ndarray]) -> ndarray:
+def transcode_str_line(sequence: str, separator: str, transcode_dict: Dict[str, ndarray]) -> ndarray:
     splitted = [token for token in split_sequence(sequence.strip().lower(), separator=separator) if token != '']
     tokens = []
     for word in splitted:
@@ -98,7 +98,7 @@ def process_file(path_to_file: str, path_to_dict: str, path_output_file: str, se
             time.sleep(0.01)
             for line in tqdm(file, total=total, mininterval=0.5):
                 csv_line = {"inputs": line.strip(),
-                            "vectors": transcode_sequence(sequence=line,
+                            "vectors": transcode_str_line(sequence=line,
                                                           separator=separator,
                                                           transcode_dict=transcode_dict).tolist()}
                 writer.writerow(csv_line)

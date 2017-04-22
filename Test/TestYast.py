@@ -4,7 +4,7 @@ from unittest.mock import patch, MagicMock, _patch_object
 
 import numpy
 
-from yast import load_dictionary, process_file, transcode_sequence
+from yast import load_dictionary, process_file, transcode_str_line
 
 
 class TestYast(unittest.TestCase):
@@ -40,7 +40,7 @@ class TestYast(unittest.TestCase):
             "c": numpy.array([2])
         }
 
-        actual_array = transcode_sequence(sequence="a b c", separator="\ |\.|\,", transcode_dict=transcode_dict)
+        actual_array = transcode_str_line(sequence="a b c", separator="\ |\.|\,", transcode_dict=transcode_dict)
         self.assertTrue(numpy.array_equal(actual_array, numpy.array([[0], [1], [2]])),
                         "sequence transcoded should return the same array as the mocked one")
 
