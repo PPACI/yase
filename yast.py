@@ -1,7 +1,7 @@
 import csv
 import json
 import re
-from typing import List, Dict
+from typing import List, Dict, Iterator
 
 import numpy
 import time
@@ -85,27 +85,43 @@ def count_line(encoding, path):
     return total
 
 
+def get_file_iterator(path: str, *args, **kwargs) -> Iterator[str]:
+    """
+    Read a file and yield each line.
+    Pass additional args and kwargs to builtin open method
+    
+    :param path: path to file to read
+    :return: an iterator over each line in file
+    """
+    with open(path, *args, **kwargs) as file:
+        for line in file:
+            yield line
+
+
 def process_file(path_to_file: str, path_to_dict: str, path_output_file: str, separator: str,
                  file_encoding: str = "UTF8",
                  dict_encoding: str = "UTF8"):
+    # Loading transcoding ding
     print("loading dict...")
     transcode_dict = load_dictionary(path_to_dict, encoding=dict_encoding)
 
+    # Sleep for tqdm
     time.sleep(0.01)
     print("transcoding file...")
-    with open(path_to_file, encoding=file_encoding) as file:
-        total = sum([1 for _ in file])
-    with open(path_to_file, encoding=file_encoding) as file:
-        with open(path_output_file, encoding="UTF8", newline="", mode="w") as csv_output:
-            fields = ["inputs", "vectors"]
-            writer = csv.DictWriter(csv_output, fieldnames=fields)
-            writer.writeheader()
-            time.sleep(0.01)
-            for line in tqdm(file, total=total, mininterval=0.5):
-                csv_line = {"inputs": line.strip(),
-                            "vectors": transcode_str_line(sequence=line,
-                                                          separator=separator,
-                                                          transcode_dict=transcode_dict).tolist()}
-                writer.writerow(csv_line)
+
+    # Counting total line in input file for tqdm
+    total = count_line(path=path_to_file, encoding=file_encoding)
+
+    with open(path_output_file, encoding="UTF8", newline="", mode="w") as csv_output:
+        fields = ["inputs", "vectors"]
+        writer = csv.DictWriter(csv_output, fieldnames=fields)
+        writer.writeheader()
+        time.sleep(0.01)
+        for line in tqdm(get_file_iterator(path_to_file), total=total, mininterval=0.5):
+            csv_line = {"inputs": line.strip(),
+                        "vectors": transcode_str_line(sequence=line,
+                                                      separator=separator,
+                                                      transcode_dict=transcode_dict).tolist()}
+            writer.writerow(csv_line)
     time.sleep(0.01)
     print("done !")
