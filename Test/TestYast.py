@@ -8,9 +8,11 @@ from yast import load_dictionary, process_file, transcode_str_line
 
 
 class TestYast(unittest.TestCase):
-    @patch("yast.open")
-    def test_load_dictionary(self, mocked_open):
-        self.mock_open(mocked_open, ["a 0", "b 1", "c 2"])
+    @patch("yast.count_line")
+    @patch("yast.get_file_iterator")
+    def test_load_dictionary(self, mocked_file_iterator, mocked_count_line):
+        mocked_file_iterator.return_value = iter(["a 0", "b 1", "c 2"])
+        mocked_count_line.return_value = 3
 
         # load method with mocked open method
         loaded_dict = load_dictionary("/toto")
@@ -22,18 +24,7 @@ class TestYast(unittest.TestCase):
 
         self.assertEqual(loaded_dict, expected_dict, "The loaded dict should be like the mocked one")
 
-    @staticmethod
-    def mock_open(mocked_open, results):
-        # Mock the file behaviour
-        mock_file = MagicMock()
-        mock_file.__iter__.return_value = results
-        # Mock the file context manager
-        mock_context = MagicMock()
-        mock_context.__enter__.return_value = mock_file
-        # Mock the open method to return the mocked context manager
-        mocked_open.return_value = mock_context
-
-    def test_transcode_sequence(self):
+    def test_transcode_str_line(self):
         transcode_dict = {
             "a": numpy.array([0]),
             "b": numpy.array([1]),

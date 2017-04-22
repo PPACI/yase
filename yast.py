@@ -60,22 +60,19 @@ def load_dictionary(path: str, encoding="UTF8") -> Dict[str, ndarray]:
     """
     total = count_line(encoding, path)
 
-    with open(path, encoding=encoding) as file:
-        # total_stream = file.seek(0,2)
-        # file.seek(0,0)  # Return to the start of the file
-        transcode_dict = {}
-        time.sleep(0.01)  # Workaround for tqdm (windows only ?)
-        for text_line in tqdm(file, total=total, mininterval=0.5):
-            splitted_line = text_line.strip().split(" ")
-            vectors = []
-            for value in splitted_line[1:]:
-                try:
-                    vectors.append(float(value))
-                except ValueError:
-                    pass
-            transcode_dict[splitted_line[0].lower()] = numpy.array(splitted_line[1:], dtype=numpy.float16)
+    transcode_dict = {}
+    time.sleep(0.01)  # Workaround for tqdm (windows only ?)
+    for text_line in tqdm(get_file_iterator(path), total=total, mininterval=0.5):
+        splitted_line = text_line.strip().split(" ")
+        vectors = []
+        for value in splitted_line[1:]:
+            try:
+                vectors.append(float(value))
+            except ValueError:
+                pass
+        transcode_dict[splitted_line[0].lower()] = numpy.array(splitted_line[1:], dtype=numpy.float16)
 
-            # TODO: the creation of a numpy array at each iteration is very slow, it should be refactored.
+        # TODO: the creation of a numpy array at each iteration is very slow, it should be refactored.
     return transcode_dict
 
 
