@@ -3,7 +3,7 @@ from .yase import process_file
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Yet Another Sequence Translator')
+    parser = argparse.ArgumentParser(description='Yet Another Sequence Encoder')
     parser.add_argument('--input', metavar="input.txt", type=str, help='Path to file to transcode', required=True)
     parser.add_argument('--input-encoding', metavar="UTF8", type=str, help='encoding of input file. UTF8 by default',
                         required=False, default="UTF8")

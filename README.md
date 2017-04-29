@@ -39,18 +39,16 @@ The default separator is a space " " but any regular expression can be provided.
 **Note that Yase is case insensitive**
 
 ## How to use
-1) Clone Yase
-2) Install dependencies with `pip install -r requirements.txt`
-3) Use Yase !
+yase is command line tool. You can install by with :`pip install git+https://github.com/PPACI/yase.git`
 
 ```
->> python main.py -h
-usage: main.py [-h] --input input.txt [--input-encoding UTF8] --output
+>> yase
+usage: yase [-h] --input input.txt [--input-encoding UTF8] --output
                output.txt --mapping mapping.vec [--mapping-encoding UTF8]
                [--separator \ |\.|\,] [--no-replace]
                [--cleaning-json cleaning.json]
 
-Yet Another Sequence Translator
+Yet Another Sequence Encoder
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -72,7 +70,7 @@ optional arguments:
 
 If you wanted to use the english word vector for an input file like previously described :
 ```
-python main.py --input "input.txt" --output "output.csv" --mapping "wiki.en.vec" 
+yase --input "input.txt" --output "output.csv" --mapping "wiki.en.vec" 
 ```
 
 ## Output format

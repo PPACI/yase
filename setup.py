@@ -6,7 +6,7 @@ setup(
     url='https://github.com/PPACI/yase',
     license='MIT',
     author='Pierre Paci',
-    author_email='',
+    author_email='pierre.paci',
     description='Yet Another Sequence Encoder - Encode sequences to vector of vector in python !',
     install_requires=[
         'tqdm>=4.11.2',
