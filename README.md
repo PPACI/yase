@@ -45,18 +45,28 @@ The default separator is a space " " but any regular expression can be provided.
 
 ```
 >> python main.py -h
-usage: main.py [-h] --input input.txt --output output.txt --mapping
-               mapping.vec --separator \ |\.|\,
+usage: main.py [-h] --input input.txt [--input-encoding UTF8] --output
+               output.txt --mapping mapping.vec [--mapping-encoding UTF8]
+               [--separator \ |\.|\,] [--no-replace]
+               [--cleaning-json cleaning.json]
 
 Yet Another Sequence Translator
 
 optional arguments:
   -h, --help            show this help message and exit
   --input input.txt     Path to file to transcode
+  --input-encoding UTF8
+                        encoding of input file. UTF8 by default
   --output output.txt   Path to output file
   --mapping mapping.vec
                         Path to mapping file
+  --mapping-encoding UTF8
+                        encoding of mapping file. UTF8 by default
   --separator \ |\.|\,  regular expression used to split the input sequence
+  --no-replace          don't clean input data
+  --cleaning-json cleaning.json
+                        Path to your own json replacement file for cleaning.
+                        Will use the included replacement file otherwise.
 
 ```
 
@@ -80,6 +90,34 @@ The output file will be similar to :
 |:----:|:-----:|
 |hello world|[[1,1,1],[2,2,2]]
 |yast is awesome !|[[3,3,3],[4,4,4]]|
+
+## Cleaning
+Yast will **automatically** try to clean your input file by applying regex in the right order.
+
+For example : `Hello I'm yast.Nice to meet you` will magically become `Hello I m yast . Nice to meet you`.
+
+Remember that yast is case insensitive. So yast will understand as `hello i m yast . nice to meet you`.
+
+Lastly, if your mapping doesn't include a mapping for ".", you will obtain vectors for `hello i m yast nice to meet you`
+
+Of course, you can disable this behaviour by providing `--no-replace` argument.
+
+### Providing your own replacement file
+You can do this by providing a path to your file with `--cleaning-json`.
+
+The replacement file is a json like :
+```json
+{
+  "\"": "",
+  "'": "",
+  ",": " , ",
+  "\\.": " . ",
+  "  ": " "
+}
+```
+Input are regex, so remind to escape . or *. 
+
+Note that replacement are made in the same order as in the json. So here, the first replacement will be to remove "
 
 ## How to load a yast output ?
 

@@ -1,4 +1,6 @@
+import json
 import unittest
+from collections import OrderedDict
 from unittest.mock import patch, MagicMock, _patch_object
 
 import numpy
@@ -30,32 +32,45 @@ class test_yast(unittest.TestCase):
             "c": numpy.array([2])
         }
 
-        actual_array = yast.transcode_str_line(sequence="a b c", separator="\ |\.|\,", transcode_dict=transcode_dict)
+        actual_array = yast.transcode_str_line(sequence="a b c", separator="\ |\.|\,", transcode_dict=transcode_dict,
+                                               replacements={})
         self.assertTrue(numpy.array_equal(actual_array, numpy.array([[0], [1], [2]])),
                         "sequence transcoded should return the same array as the mocked one")
 
     def test_transcode_str_line_with_replacements(self):
+        input_str = "a. b. c +"
         transcode_dict = {
             "a": numpy.array([0]),
             "b": numpy.array([1]),
-            "c": numpy.array([2])
+            "c": numpy.array([2]),
+            ".": numpy.array([4])
         }
+        dict_repl = yast.get_replacement_dict(path="Ressources/replacement.json", no_replace=False)
 
-        actual_array = yast.transcode_str_line(sequence="\"a\" b c",
-                                               separator="\ |\.|\,",
+        actual_array = yast.transcode_str_line(sequence=input_str,
+                                               separator="\ ",
                                                transcode_dict=transcode_dict,
-                                               replacements={"\"": ""})
-        self.assertTrue(numpy.array_equal(actual_array, numpy.array([[0], [1], [2]])),
+                                               replacements=dict_repl)
+        self.assertTrue(numpy.array_equal(actual_array, numpy.array([[0], [4], [1], [4], [2]])),
                         "sequence transcoded should return the same array as the mocked one")
 
     def test_list_replace(self):
-        bad_str = "\"\"a\"\""
-        replacements = {
-            "\"\"": "\"",
-            "a": "b"
-        }
-        actual_str = yast.apply_list_replace(input_str=bad_str, replacements=replacements)
-        self.assertEqual(actual_str, "\"b\"", "str should have been transformed")
+        bad_str = "\"\"a\"\".."
+        dict_repl = yast.get_replacement_dict(path="Ressources/replacement.json", no_replace=False)
+        actual_str = yast.apply_list_replace(input_str=bad_str, replacements=dict_repl)
+        self.assertEqual(actual_str, "a . . ", "str should have been transformed")
+
+    def test_get_replacement_dict(self):
+        with open("Ressources/replacement.json") as f:
+            expected_dict = json.load(f, object_pairs_hook=OrderedDict)
+        dict_repl = yast.get_replacement_dict(path="Ressources/replacement.json", no_replace=False)
+        self.assertEqual(dict_repl, expected_dict, msg="returned dict should be like supplied one")
+
+        dict_repl = yast.get_replacement_dict(path=None, no_replace=False)
+        self.assertEqual(dict_repl, expected_dict, msg="returned dict should be like supplied one, with default dict")
+
+        dict_repl = yast.get_replacement_dict(path="Ressources/replacement.json", no_replace=True)
+        self.assertEqual(dict_repl, {}, msg="returned dict should be empty")
 
 
 if __name__ == '__main__':

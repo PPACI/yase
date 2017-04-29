@@ -1,7 +1,8 @@
 import csv
 import json
 import re
-from typing import List, Dict, Iterator
+from collections import OrderedDict
+from typing import List, Dict, Iterator, Optional
 
 import numpy
 import time
@@ -55,13 +56,20 @@ def transcode_token(token: str, transcode_dict: Dict[str, ndarray]) -> ndarray:
     return transcode_dict.get(token)
 
 
-def get_replacement_dict(path: str, *args, **kwargs) -> Dict[str, str]:
-    # Todo: Read a CSV file "regex", "replacement" and return it as dict
-    raise NotImplementedError
+def get_replacement_dict(path: Optional[str], no_replace: bool) -> Dict[str, str]:
+    if no_replace:
+        return {}
+    else:
+        if path is None:
+            with open("Ressources/replacement.json") as f:
+                return json.load(f, object_pairs_hook=OrderedDict)
+        else:
+            with open(path) as f:
+                return json.load(f, object_pairs_hook=OrderedDict)
 
 
 def transcode_str_line(sequence: str, separator: str, transcode_dict: Dict[str, ndarray],
-                       replacements: Dict[str, str] = None) -> ndarray:
+                       replacements: Dict[str, str]) -> ndarray:
     replaced = apply_list_replace(input_str=sequence, replacements=replacements)
     splitted = [token for token in split_sequence(replaced.strip().lower(), separator=separator) if token != '']
     tokens = []
@@ -118,14 +126,17 @@ def get_file_iterator(path: str, *args, **kwargs) -> Iterator[str]:
 
 
 def process_file(path_to_file: str, path_to_dict: str, path_output_file: str, separator: str,
-                 file_encoding: str, dict_encoding: str):
-    # Loading transcoding ding
+                 file_encoding: str, dict_encoding: str, no_replace: bool, path_to_cleaning: Optional[str]):
+    # Loading transcoding dict
     print("loading dict...")
     transcode_dict = load_dictionary(path_to_dict, encoding=dict_encoding)
 
     # Sleep for tqdm
     time.sleep(0.01)
     print("transcoding file...")
+
+    # Loading replacement dict according to the replacement option
+    cleaning = get_replacement_dict(path=path_to_cleaning, no_replace=no_replace)
 
     # Counting total line in input file for tqdm
     total = count_line(path=path_to_file, encoding=file_encoding)
@@ -139,7 +150,8 @@ def process_file(path_to_file: str, path_to_dict: str, path_output_file: str, se
             csv_line = {"inputs": line.strip(),
                         "vectors": transcode_str_line(sequence=line,
                                                       separator=separator,
-                                                      transcode_dict=transcode_dict).tolist()}
+                                                      transcode_dict=transcode_dict,
+                                                      replacements=cleaning).tolist()}
             writer.writerow(csv_line)
     time.sleep(0.01)
     print("done !")
