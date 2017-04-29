@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/PPACI/yast.svg?branch=master)](https://travis-ci.org/PPACI/yast)
 # Yast
 Yet Another Sequence Transcoder - transcode sequences to vector of vectors in python !
 
