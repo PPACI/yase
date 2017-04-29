@@ -23,7 +23,6 @@ class test_yast(unittest.TestCase):
             "b": numpy.array([1]),
             "c": numpy.array([2])
         }
-        raise Exception
 
         self.assertEqual(loaded_dict, expected_dict, "The loaded dict should be like the mocked one")
 
