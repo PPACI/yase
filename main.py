@@ -1,5 +1,5 @@
 import argparse
-from yast import process_file
+from yase import process_file
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Yet Another Sequence Translator')
