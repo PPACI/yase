@@ -1,5 +1,4 @@
 import unittest
-from pandas import json
 from unittest.mock import patch, MagicMock, _patch_object
 
 import numpy
