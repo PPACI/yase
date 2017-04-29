@@ -5,4 +5,10 @@ python:
 install:
   - pip install -r requirements.txt
 script: pytest -v
-
+deploy:
+  provider: pypi
+  user: "PPACI"
+  password:
+    secure: "edT5GE6smtcIPS59XG7bUVZlzp64PkAKPdz9DxxxNRCzFgm8CydJnGn12pPHLYK2+PcqIvzEk9PgMzFMiHz8Q5/hSptWC52wCmUotZ2AUV42viKNhFWVFq8xK0b+ZsNsk/ehQMvisB5J7lsSR1zE80vpALytvcVC7rzqSD2SWWoJFodgpX5SZO2U760ikOfk7CDW2d9QHvKJC6BpN6I82rRh2ONfAMVmtrHySxUXw1dY/yV3jfUY1bk1wa46GOIdaC+SbMYviX4Kt69rkw2x9lnzfoK7vPEysJtptcl7U7onuu4rrAUPb8jTAJmNf2XN0kZoTvkIPbR8qxwoZZL38DVTIgeKTqUYEBMF2eKKmP4I9W8XcDu+XDs8IMtp4kfQ5vbtmJjuh6cy9XLgMQEPqJaG47i4WTqjd9koiVg0aW/VlCYGDRMMysrfwNPdgPI9mhWey3aPCqS9/vVneyR8WT0smhkl03k++muzsQvO76UPn7G+y1KMSc1rbAndksjZPum5JsQKIMmlGz9lpFz17bAsMSKPaOFV2mhG16eAMwT/PXwOPkvLVbFsNE2JGqz8ZO/a8PODveKjYERHMn4p0+73clUljWj8Mpa8yFqEt9PpYkpGi3p2MlrBK4EeBqNkIonrdDMc4xkrmEzdG73aB1sTVqu1ItJlafaZgg6ah10="
+  on:
+    tags: true

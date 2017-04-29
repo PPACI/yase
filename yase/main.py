@@ -1,7 +1,8 @@
 import argparse
-from yase import process_file
+from .yase import process_file
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser(description='Yet Another Sequence Translator')
     parser.add_argument('--input', metavar="input.txt", type=str, help='Path to file to transcode', required=True)
     parser.add_argument('--input-encoding', metavar="UTF8", type=str, help='encoding of input file. UTF8 by default',
@@ -25,3 +26,7 @@ if __name__ == '__main__':
                  dict_encoding=args.mapping_encoding,
                  no_replace=args.no_replace,
                  path_to_cleaning=args.cleaning_json)
+
+
+if __name__ == '__main__':
+    main()

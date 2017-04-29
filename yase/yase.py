@@ -1,5 +1,6 @@
 import csv
 import json
+import os
 import re
 from collections import OrderedDict
 from typing import List, Dict, Iterator, Optional
@@ -61,7 +62,7 @@ def get_replacement_dict(path: Optional[str], no_replace: bool) -> Dict[str, str
         return {}
     else:
         if path is None:
-            with open("Ressources/replacement.json") as f:
+            with open(os.path.join(os.path.dirname(__file__), "Ressources/replacement.json")) as f:
                 return json.load(f, object_pairs_hook=OrderedDict)
         else:
             with open(path) as f:
