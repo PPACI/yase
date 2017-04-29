@@ -1,19 +1,19 @@
-[![Build Status](https://travis-ci.org/PPACI/yast.svg?branch=master)](https://travis-ci.org/PPACI/yast)
-# Yast
-Yet Another Sequence Transcoder - transcode sequences to vector of vectors in python !
+[![Build Status](https://travis-ci.org/PPACI/yase.svg?branch=master)](https://travis-ci.org/PPACI/yase)
+# Yase
+Yet Another Sequence Encoder - encode sequences to vector of vectors in python !
 
-## Why Yast ?
-Yast enable you to transcode **any** sequence which can be represented by **string**
+## Why Yase ?
+Yase enable you to encode **any** sequence which can be represented by **string**
 to be encoded into a **list of word-vector** representation.
 
 When searching over a tool to encode a sentence as a list of word-vector, it was clear that there was no
-simple tool to use. And so, i decided to create Yast.
+simple tool to use. And so, i decided to create Yase.
 
 Note : If you only want to get the word-vector of a word, or average of word-vector in sentence,
 you should probably better check [Spacy](https://github.com/explosion/spaCy).
 
 ## Requirements
-Yast requirements are :
+Yase requirements are :
 * [numpy](https://github.com/numpy/numpy)
 * [tqdm](https://github.com/tqdm/tqdm)
 
@@ -32,16 +32,16 @@ You should be able to directly use [Facebook Fast Text pretrained word vector](h
 Input file should be a list of text, with one sample per line.
 ```
 hello world
-Yast is awesome !
+Yase is awesome !
 ```
 The default separator is a space " " but any regular expression can be provided.
 
-**Note that Yast is case insensitive**
+**Note that Yase is case insensitive**
 
 ## How to use
-1) Clone Yast
+1) Clone Yase
 2) Install dependencies with `pip install -r requirements.txt`
-3) Use Yast !
+3) Use Yase !
 
 ```
 >> python main.py -h
@@ -54,7 +54,7 @@ Yet Another Sequence Translator
 
 optional arguments:
   -h, --help            show this help message and exit
-  --input input.txt     Path to file to transcode
+  --input input.txt     Path to file to encode
   --input-encoding UTF8
                         encoding of input file. UTF8 by default
   --output output.txt   Path to output file
@@ -76,29 +76,29 @@ python main.py --input "input.txt" --output "output.csv" --mapping "wiki.en.vec"
 ```
 
 ## Output format
-The idea behind yast is to be as easy as possible to integrate it in all data science processing.
+The idea behind yase is to be as easy as possible to integrate it in all data science processing.
 
-Yast output it's your data as **CSV**.
+Yase output it's your data as **CSV**.
 
 The only problem with CSV is that it's difficult to integrate multi-dimensional array. So we had to find a compromise..
 
-Yast encode the vector columns in JSON format, which is easily readable and is very similar to python array representation.
+Yase encode the vector columns in JSON format, which is easily readable and is very similar to python array representation.
 
 The output file will be similar to :
 
 |inputs|vectors|
 |:----:|:-----:|
 |hello world|[[1,1,1],[2,2,2]]
-|yast is awesome !|[[3,3,3],[4,4,4]]|
+|yase is awesome !|[[3,3,3],[4,4,4]]|
 
 ## Cleaning
-Yast will **automatically** try to clean your input file by applying regex in the right order.
+Yase will **automatically** try to clean your input file by applying regex in the right order.
 
-For example : `Hello I'm yast.Nice to meet you` will magically become `Hello I m yast . Nice to meet you`.
+For example : `Hello I'm yase.Nice to meet you` will magically become `Hello I m yase . Nice to meet you`.
 
-Remember that yast is case insensitive. So yast will understand as `hello i m yast . nice to meet you`.
+Remember that yase is case insensitive. So yase will understand as `hello i m yase . nice to meet you`.
 
-Lastly, if your mapping doesn't include a mapping for ".", you will obtain vectors for `hello i m yast nice to meet you`
+Lastly, if your mapping doesn't include a mapping for ".", you will obtain vectors for `hello i m yase nice to meet you`
 
 Of course, you can disable this behaviour by providing `--no-replace` argument.
 
@@ -119,9 +119,9 @@ Input are regex, so remind to escape . or *.
 
 Note that replacement are made in the same order as in the json. So here, the first replacement will be to remove "
 
-## How to load a yast output ?
+## How to load a yase output ?
 
-As said previously, the choice made with Yast make it possible to use it as simply as :
+As said previously, the choice made with Yase make it possible to use it as simply as :
 
 ```python
 import pandas, json
@@ -142,4 +142,4 @@ Note that [Pandas](https://github.com/pandas-dev/pandas) is not mandatory but ve
 
 ## Can i contribute ?
 
-Off course ! If you want to improve Yast, your idea / pull requests / issues are welcomed !
+Off course ! If you want to improve Yase, your idea / pull requests / issues are welcomed !
