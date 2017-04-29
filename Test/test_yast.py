@@ -14,7 +14,7 @@ class test_yast(unittest.TestCase):
         mocked_count_line.return_value = 3
 
         # load method with mocked open method
-        loaded_dict = yast.load_dictionary("/toto")
+        loaded_dict = yast.load_dictionary("/toto", encoding="UTF8")
         expected_dict = {
             "a": numpy.array([0]),
             "b": numpy.array([1]),

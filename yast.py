@@ -72,7 +72,7 @@ def transcode_str_line(sequence: str, separator: str, transcode_dict: Dict[str, 
     return numpy.stack(tokens, axis=0)  # TODO: return a fixed sized array
 
 
-def load_dictionary(path: str, encoding="UTF8") -> Dict[str, ndarray]:
+def load_dictionary(path: str, encoding) -> Dict[str, ndarray]:
     """
     Load the transcoding dict. It process the file chunk by chunk so very large file should not be a problem.
 
@@ -118,8 +118,7 @@ def get_file_iterator(path: str, *args, **kwargs) -> Iterator[str]:
 
 
 def process_file(path_to_file: str, path_to_dict: str, path_output_file: str, separator: str,
-                 file_encoding: str = "UTF8",
-                 dict_encoding: str = "UTF8"):
+                 file_encoding: str, dict_encoding: str):
     # Loading transcoding ding
     print("loading dict...")
     transcode_dict = load_dictionary(path_to_dict, encoding=dict_encoding)
