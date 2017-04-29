@@ -90,6 +90,3 @@ ENV/
 
 # intelliJ
 *.idea
-
-# test files
-Ressources
