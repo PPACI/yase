@@ -7,7 +7,7 @@ import numpy
 import yast
 
 
-class TestYast(unittest.TestCase):
+class test_yast(unittest.TestCase):
     @patch("yast.count_line")
     @patch("yast.get_file_iterator")
     def test_load_dictionary(self, mocked_file_iterator, mocked_count_line):
