@@ -93,7 +93,7 @@ def load_dictionary(path: str, encoding) -> Dict[str, ndarray]:
 
     transcode_dict = {}
     time.sleep(0.01)  # Workaround for tqdm (windows only ?)
-    for text_line in tqdm(get_file_iterator(path), total=total, mininterval=0.5):
+    for text_line in tqdm(get_file_iterator(path, encoding=encoding), total=total, mininterval=0.5):
         splitted_line = text_line.strip().split(" ")
         vectors = []
         for value in splitted_line[1:]:
