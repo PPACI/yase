@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='yase',
-    version='1.0',
+    version='1.0.1',
     url='https://github.com/PPACI/yase',
     license='MIT',
     author='Pierre Paci',
