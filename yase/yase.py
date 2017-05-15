@@ -147,7 +147,7 @@ def process_file(path_to_file: str, path_to_dict: str, path_output_file: str, se
         writer = csv.DictWriter(csv_output, fieldnames=fields)
         writer.writeheader()
         time.sleep(0.01)
-        for line in tqdm(get_file_iterator(path_to_file), total=total, mininterval=0.5):
+        for line in tqdm(get_file_iterator(path_to_file, encoding=file_encoding), total=total, mininterval=0.5):
             csv_line = {"inputs": line.strip(),
                         "vectors": transcode_str_line(sequence=line,
                                                       separator=separator,
