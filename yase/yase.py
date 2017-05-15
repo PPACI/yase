@@ -78,7 +78,10 @@ def transcode_str_line(sequence: str, separator: str, transcode_dict: Dict[str, 
         token = transcode_token(token=word, transcode_dict=transcode_dict)
         if token is not None:
             tokens.append(token)
-    return numpy.stack(tokens, axis=0)  # TODO: return a fixed sized array
+    if len(tokens) > 0:
+        return numpy.stack(tokens, axis=0)
+    else:
+        return numpy.array(())
 
 
 def load_dictionary(path: str, encoding) -> Dict[str, ndarray]:
